@@ -2,6 +2,7 @@ import tkinter
 import customtkinter as ctk
 from PIL import Image
 import hashlib
+import tkinter.messagebox as tmb
 
 ctk.set_appearance_mode("Dark") # Установка внешнего вида
 ctk.set_default_color_theme("blue") # Установка темы
@@ -11,7 +12,7 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         self.value = None # Переменная хранящая состояния сегментного меню
-        self.entry = ctk.CTkEntry(self, width=400, # - Поле ввода
+        self.entry = ctk.CTkEntry(self, width=490, # - Поле ввода
                                 height=30, 
                                 corner_radius=10, 
                                 placeholder_text="Enter text to generate hash ...")
@@ -23,11 +24,11 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
                                            command=self.buttonClick)
         self.buttonEncrypt.place(x=4, y=36)
         self.segementedButtonVar = ctk.StringVar(value="Value 1")
-        self.segementedButton = ctk.CTkSegmentedButton(self, values=["SHA1", "SHA224", "SHA256", "SHA512", "MD5"],
+        self.segementedButton = ctk.CTkSegmentedButton(self, values=["SHA1", "SHA224","SHA384", "SHA256", "SHA512", "MD5"],
                                                      command=self.segmentedButtonCallback,
                                                      variable=self.segementedButtonVar)
-        self.segementedButton.place(x=154, y=36)
-        self.entry2 = ctk.CTkEntry(self, width=400, 
+        self.segementedButton.place(x=168, y=36)
+        self.entry2 = ctk.CTkEntry(self, width=490, 
                                    height=30, 
                                    corner_radius=10, 
                                    placeholder_text="--Generated hash--")
@@ -45,6 +46,10 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
             stringObject = self.entry.get()
             hashObject = hashlib.sha256(stringObject.encode()).hexdigest()
             self.entry2.insert(0, hashObject)
+        elif self.value == "SHA384":
+            stringObject = self.entry.get()
+            hashObject = hashlib.sha3_384(stringObject.encode()).hexdigest()
+            self.entry2.insert(0, hashObject)
         elif self.value == "SHA512":
             stringObject = self.entry.get()
             hashObject = hashlib.sha512(stringObject.encode()).hexdigest()
@@ -54,7 +59,7 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
             hashObject = hashlib.md5(stringObject.encode()).hexdigest()
             self.entry2.insert(0, hashObject)
         else:
-            pass
+            tmb.showwarning(title="Предупреждение", message="Выбери протокол хеширования")
 # Данная функция проверяет какой пункт сегментного меню выбран и сохраняет в переменную self.value
 # - значение выбранного сегмента.
     def segmentedButtonCallback(self, value):
@@ -79,23 +84,15 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
             print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
             return value, self.value
 
-def slider_event(self, value):
-        print(value)
-def checkbox_event():
-    print("checkbox toggled, current value:", check_var.get())
 
-def segmented_button_callback(value):
-    if value == "SHA1":
-        print("segmented button clicked:", value)
-#Базовый фрейм
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.geometry("700x500")
         self.title("GO CASTLE")
         self.iconbitmap('main.ico')
-        self.minsize(700, 300)
-        self.maxsize(700,300)
+        self.minsize(750, 300)
+        self.maxsize(750,300)
         self.logo = ctk.CTkImage(dark_image=Image.open("image.png"), size=(320, 50))
         self.logoLabel = ctk.CTkLabel(self, text="", image=self.logo)
         self.logoLabel.pack(padx=2, pady=2)
