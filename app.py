@@ -7,43 +7,76 @@ ctk.set_appearance_mode("Dark") # Установка внешнего вида
 ctk.set_default_color_theme("blue") # Установка темы
 ctk.set_widget_scaling(1.5) # Установка коэффициента масштабирования
 
-
 class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввода данных
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
-        self.value = None
-        self.entry = ctk.CTkEntry(self, width=400, height=30, corner_radius=10, placeholder_text="Enter text to generate hash ...")
+        self.value = None # Переменная хранящая состояния сегментного меню
+        self.entry = ctk.CTkEntry(self, width=400, # - Поле ввода
+                                height=30, 
+                                corner_radius=10, 
+                                placeholder_text="Enter text to generate hash ...")
         self.entry.pack(padx=2, pady=4)
-        self.bgButton = ctk.CTkImage(dark_image=Image.open("imageEncrypt.png"), size=(80, 15))
-        self.buttonEncrypt = ctk.CTkButton(self, fg_color="#1E90FF", image=self.bgButton, text="", command=self.button_click)
+        self.bgButton = ctk.CTkImage(dark_image=Image.open("imageEncrypt.png"), size=(80, 15)) # - Фон для кнопки хеширования
+        self.buttonEncrypt = ctk.CTkButton(self, fg_color="#1E90FF", # - Кнопка хеширования
+                                           image=self.bgButton, 
+                                           text="", 
+                                           command=self.buttonClick)
         self.buttonEncrypt.place(x=4, y=36)
-        self.segemented_button_var = ctk.StringVar(value="Value 1")
-        self.segemented_button = ctk.CTkSegmentedButton(self, values=["SHA1", "SHA224", "SHA256", "SHA512", "MD5"],
-                                                     command=self.segmented_button_callback,
-                                                     variable=self.segemented_button_var)
-        self.segemented_button.place(x=154, y=36)
-        self.entry2 = ctk.CTkEntry(self, width=400, height=30, corner_radius=10, placeholder_text="--Generated hash--")
+        self.segementedButtonVar = ctk.StringVar(value="Value 1")
+        self.segementedButton = ctk.CTkSegmentedButton(self, values=["SHA1", "SHA224", "SHA256", "SHA512", "MD5"],
+                                                     command=self.segmentedButtonCallback,
+                                                     variable=self.segementedButtonVar)
+        self.segementedButton.place(x=154, y=36)
+        self.entry2 = ctk.CTkEntry(self, width=400, 
+                                   height=30, 
+                                   corner_radius=10, 
+                                   placeholder_text="--Generated hash--")
         self.entry2.pack(padx=2, pady=[50, 4])
-    def button_click(self):
+    def buttonClick(self): # - функция хеширования строки
         if self.value == "SHA1":
             stringObject = self.entry.get()
-            hashObject = hashlib.sha1(stringObject.encode())
-            print(hashObject.hexdigest())
-        elif self.value == "SHA2":
+            hashObject = hashlib.sha1(stringObject.encode()).hexdigest()
+            self.entry2.insert(0, hashObject)
+        elif self.value == "SHA224":
             stringObject = self.entry.get()
-            hashObject = hashlib.sha224
+            hashObject = hashlib.sha224(stringObject.encode()).hexdigest()
+            self.entry2.insert(0, hashObject)
+        elif self.value == "SHA256":
+            stringObject = self.entry.get()
+            hashObject = hashlib.sha256(stringObject.encode()).hexdigest()
+            self.entry2.insert(0, hashObject)
+        elif self.value == "SHA512":
+            stringObject = self.entry.get()
+            hashObject = hashlib.sha512(stringObject.encode()).hexdigest()
+            self.entry2.insert(0, hashObject)
+        elif self.value == "MD5":
+            stringObject = self.entry.get()
+            hashObject = hashlib.md5(stringObject.encode()).hexdigest()
+            self.entry2.insert(0, hashObject)
         else:
             pass
-
-        print("button click")
-    def segmented_button_callback(self, value):
+# Данная функция проверяет какой пункт сегментного меню выбран и сохраняет в переменную self.value
+# - значение выбранного сегмента.
+    def segmentedButtonCallback(self, value):
         if value == "SHA1":
             self.value = "SHA1"
-            print("segmented button clicked:", value)
+            print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
             return value, self.value
-        elif value == "SHA2":
-            self.value = "SHA2"
-            print("segmented button clicked:", value)
+        elif value == "SHA224":
+            self.value = "SHA224"
+            print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
+            return value, self.value
+        elif value == "SHA256":
+            self.value = "SHA256"
+            print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
+            return value, self.value
+        elif value == "SHA512":
+            self.value = "SHA512"
+            print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
+            return value, self.value
+        elif value == "MD5":
+            self.value = "MD5"
+            print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
             return value, self.value
 
 def slider_event(self, value):
