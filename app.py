@@ -1,3 +1,9 @@
+"""
+1.Добавить кнопку сopy
+2.Оптимизировать код функции buttonClick
+3.Оптимизировать код функции egmentedButtonCallback
+4.Добавить кнопку
+"""
 import tkinter
 import customtkinter as ctk
 from PIL import Image
@@ -33,43 +39,38 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
                                    corner_radius=10, 
                                    placeholder_text="--Generated hash--")
         self.entry2.pack(padx=2, pady=[50, 4])
+    
     def buttonClick(self): # - функция хеширования строки
         if self.value == "SHA1":
             stringObject = self.entry.get()
             hashObject = hashlib.sha1(stringObject.encode()).hexdigest()
             self.entry2.delete(0, tkinter.END) # 41
             self.entry2.insert(0, hashObject)
-        
         elif self.value == "SHA224":
             stringObject = self.entry.get()
             hashObject = hashlib.sha224(stringObject.encode()).hexdigest()
             self.entry2.delete(0, tkinter.END) # 57
             self.entry2.insert(0, hashObject)
-        
         elif self.value == "SHA256":
             stringObject = self.entry.get()
             hashObject = hashlib.sha256(stringObject.encode()).hexdigest()
             self.entry2.delete(0, tkinter.END)# 65
             self.entry2.insert(0, hashObject)
-        
         elif self.value == "SHA384":
             stringObject = self.entry.get()
             hashObject = hashlib.sha384(stringObject.encode()).hexdigest()
             self.entry2.delete(0, tkinter.END)# 97
             self.entry2.insert(0, hashObject)
-
         elif self.value == "SHA512":
             stringObject = self.entry.get()
             hashObject = hashlib.sha512(stringObject.encode()).hexdigest()
             self.entry2.delete(0, tkinter.END)
             self.entry2.insert(0, hashObject)
-        
         elif self.value == "MD5":
             stringObject = self.entry.get()
             hashObject = hashlib.md5(stringObject.encode()).hexdigest()
             self.entry2.delete(0, tkinter.END)
             self.entry2.insert(0, hashObject)
-
         else:
             tmb.showwarning(title="Предупреждение", message="Выбери протокол хеширования!")
 # Данная функция проверяет какой пункт сегментного меню выбран и сохраняет в переменную self.value
@@ -100,7 +101,6 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
             print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
             return value, self.value
 
-
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -116,5 +116,6 @@ class App(ctk.CTk):
         self.myFrameEntry.pack(padx=2, pady=2)
         self.leVar = tkinter.StringVar()
 
-app = App()
-app.mainloop()
+if __name__ == '__main__':
+    app = App()
+    app.mainloop()
