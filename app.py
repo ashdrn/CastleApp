@@ -24,7 +24,7 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
                                            command=self.buttonClick)
         self.buttonEncrypt.place(x=4, y=36)
         self.segementedButtonVar = ctk.StringVar(value="Value 1")
-        self.segementedButton = ctk.CTkSegmentedButton(self, values=["SHA1", "SHA224","SHA384", "SHA256", "SHA512", "MD5"],
+        self.segementedButton = ctk.CTkSegmentedButton(self, values=["SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "MD5"],
                                                      command=self.segmentedButtonCallback,
                                                      variable=self.segementedButtonVar)
         self.segementedButton.place(x=168, y=36)
@@ -37,29 +37,41 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
         if self.value == "SHA1":
             stringObject = self.entry.get()
             hashObject = hashlib.sha1(stringObject.encode()).hexdigest()
+            self.entry2.delete(0, tkinter.END) # 41
             self.entry2.insert(0, hashObject)
+        
         elif self.value == "SHA224":
             stringObject = self.entry.get()
             hashObject = hashlib.sha224(stringObject.encode()).hexdigest()
+            self.entry2.delete(0, tkinter.END) # 57
             self.entry2.insert(0, hashObject)
+        
         elif self.value == "SHA256":
             stringObject = self.entry.get()
             hashObject = hashlib.sha256(stringObject.encode()).hexdigest()
+            self.entry2.delete(0, tkinter.END)# 65
             self.entry2.insert(0, hashObject)
+        
         elif self.value == "SHA384":
             stringObject = self.entry.get()
-            hashObject = hashlib.sha3_384(stringObject.encode()).hexdigest()
+            hashObject = hashlib.sha384(stringObject.encode()).hexdigest()
+            self.entry2.delete(0, tkinter.END)# 97
             self.entry2.insert(0, hashObject)
+
         elif self.value == "SHA512":
             stringObject = self.entry.get()
             hashObject = hashlib.sha512(stringObject.encode()).hexdigest()
+            self.entry2.delete(0, tkinter.END)
             self.entry2.insert(0, hashObject)
+        
         elif self.value == "MD5":
             stringObject = self.entry.get()
             hashObject = hashlib.md5(stringObject.encode()).hexdigest()
+            self.entry2.delete(0, tkinter.END)
             self.entry2.insert(0, hashObject)
+
         else:
-            tmb.showwarning(title="Предупреждение", message="Выбери протокол хеширования")
+            tmb.showwarning(title="Предупреждение", message="Выбери протокол хеширования!")
 # Данная функция проверяет какой пункт сегментного меню выбран и сохраняет в переменную self.value
 # - значение выбранного сегмента.
     def segmentedButtonCallback(self, value):
@@ -73,6 +85,10 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
             return value, self.value
         elif value == "SHA256":
             self.value = "SHA256"
+            print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
+            return value, self.value
+        elif value == "SHA384":
+            self.value = "SHA384"
             print("segmented button clicked:", value) # Проверка выбора сегмента в консоли
             return value, self.value
         elif value == "SHA512":
