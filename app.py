@@ -3,6 +3,7 @@
 2.Оптимизировать код функции buttonClick
 3.Оптимизировать код функции egmentedButtonCallback
 4.Добавить кнопку
+5.Создать Dockerfile
 """
 import tkinter
 import customtkinter as ctk
@@ -39,6 +40,11 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
                                    corner_radius=10, 
                                    placeholder_text="--Generated hash--")
         self.entry2.pack(padx=2, pady=[50, 4])
+        self.buttonCopy = ctk.CTkButton(self, text="COPY", command=self.copyButton)
+        self.buttonCopy.pack(padx=2, pady=[2, 4])
+
+    def copyButton(self):
+        print("buttonClick!")
     
     def buttonClick(self): # - функция хеширования строки
         if self.value == "SHA1":
