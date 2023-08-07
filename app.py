@@ -1,8 +1,6 @@
 """
-1.Добавить кнопку сopy
 2.Оптимизировать код функции buttonClick
 3.Оптимизировать код функции egmentedButtonCallback
-4.Добавить кнопку
 5.Создать Dockerfile
 """
 import tkinter
@@ -10,6 +8,7 @@ import customtkinter as ctk
 from PIL import Image
 import hashlib
 import tkinter.messagebox as tmb
+import pyperclip
 
 ctk.set_appearance_mode("Dark") # Установка внешнего вида
 ctk.set_default_color_theme("blue") # Установка темы
@@ -24,28 +23,35 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
                                 corner_radius=10, 
                                 placeholder_text="Enter text to generate hash ...")
         self.entry.pack(padx=2, pady=4)
-        self.bgButton = ctk.CTkImage(dark_image=Image.open("imageEncrypt.png"), size=(80, 15)) # - Фон для кнопки хеширования
+        self.bgButton = ctk.CTkImage(dark_image=Image.open("ImageEncrypt.png"), size=(100, 25)) # - Фон для кнопки хеширования
         self.buttonEncrypt = ctk.CTkButton(self, fg_color="#1E90FF", # - Кнопка хеширования
                                            image=self.bgButton, 
-                                           text="", 
+                                           text="",
                                            command=self.buttonClick)
-        self.buttonEncrypt.place(x=4, y=36)
+        self.buttonEncrypt.place(x=4, y=34)
         self.segementedButtonVar = ctk.StringVar(value="Value 1")
         self.segementedButton = ctk.CTkSegmentedButton(self, values=["SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "MD5"],
                                                      command=self.segmentedButtonCallback,
                                                      variable=self.segementedButtonVar)
-        self.segementedButton.place(x=168, y=36)
+        self.segementedButton.place(x=150, y=36)
         self.entry2 = ctk.CTkEntry(self, width=490, 
                                    height=30, 
                                    corner_radius=10, 
                                    placeholder_text="--Generated hash--")
-        self.entry2.pack(padx=2, pady=[50, 4])
-        self.buttonCopy = ctk.CTkButton(self, text="COPY", command=self.copyButton)
-        self.buttonCopy.pack(padx=2, pady=[2, 4])
-
-    def copyButton(self):
-        print("buttonClick!")
+        self.entry2.pack(padx=2, pady=[42, 2])
+        self.bgButtonCopy = ctk.CTkImage(dark_image=Image.open("ImageCopy.png"), size=(70, 26))
+        self.buttonCopy = ctk.CTkButton(self, text="", 
+                                        fg_color="#1E90FF", 
+                                        width=30, 
+                                        image=self.bgButtonCopy,  
+                                        text_color='#00008B', 
+                                        command=self.copyButton)
+        self.buttonCopy.pack(padx=2, pady=[0, 0])
     
+    def copyButton(self): # - функция добавления хеша в буфер обмена посредством кнопки - copy
+        cryptString = self.entry2.get()
+        pyperclip.copy(cryptString)
+
     def buttonClick(self): # - функция хеширования строки
         if self.value == "SHA1":
             stringObject = self.entry.get()
@@ -110,17 +116,16 @@ class FrameEntry(ctk.CTkFrame): # Создание фрейма для ввод�
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.geometry("700x500")
+        self.geometry("750x280")
         self.title("GO CASTLE")
-        self.iconbitmap('main.ico')
-        self.minsize(750, 300)
-        self.maxsize(750,300)
-        self.logo = ctk.CTkImage(dark_image=Image.open("image.png"), size=(320, 50))
+        # self.iconbitmap('main.ico')
+        self.minsize(750, 280)
+        self.maxsize(750,280)
+        self.logo = ctk.CTkImage(dark_image=Image.open("ImageLogo.png"), size=(320, 50))
         self.logoLabel = ctk.CTkLabel(self, text="", image=self.logo)
         self.logoLabel.pack(padx=2, pady=2)
         self.myFrameEntry = FrameEntry(master=self)
         self.myFrameEntry.pack(padx=2, pady=2)
-        self.leVar = tkinter.StringVar()
 
 if __name__ == '__main__':
     app = App()
